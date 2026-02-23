@@ -1,5 +1,5 @@
 {
-  "name": "okara-chat",
+  "name": "viral-video-generator",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -11,18 +11,33 @@
   "dependencies": {
     "@ai-sdk/openai": "^3.0.23",
     "@ai-sdk/react": "^3.0.66",
+    "@mendable/firecrawl-js": "^4.13.0",
+    "@remotion/bundler": "^4.0.427",
+    "@remotion/cli": "^4.0.427",
+    "@remotion/gif": "^4.0.427",
+    "@remotion/google-fonts": "^4.0.427",
+    "@remotion/layout-utils": "^4.0.427",
+    "@remotion/lottie": "^4.0.427",
+    "@remotion/media": "^4.0.427",
+    "@remotion/motion-blur": "^4.0.427",
+    "@remotion/noise": "^4.0.427",
+    "@remotion/paths": "^4.0.427",
+    "@remotion/player": "^4.0.427",
+    "@remotion/renderer": "^4.0.427",
+    "@remotion/shapes": "^4.0.427",
+    "@remotion/transitions": "^4.0.427",
     "ai": "^6.0.64",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "framer-motion": "^12.29.2",
     "lucide-react": "^0.563.0",
     "next": "16.1.6",
-    "pdfjs-dist": "^5.4.530",
     "react": "19.2.3",
     "react-dom": "19.2.3",
-    "react-pdf": "^10.3.0",
+    "remotion": "^4.0.427",
     "tailwind-merge": "^3.4.0",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "zod": "^4.3.6"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

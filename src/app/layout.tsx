@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Okara Chat - Chat with PDF",
-  description: "Private, secure, and fast PDF chat powered by Okara.ai",
+  title: "Viral Video Generator",
+  description: "Turn any startup URL into a viral launch video in seconds.",
 };
 
 export default function RootLayout({

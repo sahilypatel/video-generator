@@ -1,19 +1,15 @@
 "use client";
 
 import { useEffect } from "react";
-import { useRouter } from "next/navigation";
 
 export default function Home() {
-  const router = useRouter();
-
   useEffect(() => {
-    // Redirect to the static HTML page
-    window.location.href = "/chat-with-pdf.html";
+    window.location.href = "/viral-video.html";
   }, []);
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <p>Redirecting...</p>
+    <div className="min-h-screen flex items-center justify-center" style={{ fontFamily: "'Sora', sans-serif", background: "#FAF9F6" }}>
+      <p className="text-gray-400">Redirecting...</p>
     </div>
   );
 }

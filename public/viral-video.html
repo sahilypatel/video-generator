@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LaunchClip - Viral Product Videos for Startups</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cream: '#FAF9F6',
+                        coral: '#FF8C68',
+                        hotpink: '#FF5E68',
+                        softorange: '#FFA668',
+                    },
+                    fontFamily: {
+                        sans: ['Sora', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Sora', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+
+        .sunset-gradient { background: linear-gradient(135deg, #FF8C68 0%, #FF5E68 50%, #FFA668 100%); }
+        .sunset-gradient-text {
+            background: linear-gradient(135deg, #FF8C68 0%, #FF5E68 50%, #FFA668 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .video-glow {
+            box-shadow: 0 0 60px rgba(255, 94, 104, 0.2), 0 0 120px rgba(255, 140, 104, 0.1);
+        }
+        .cta-gradient {
+            background: linear-gradient(135deg, #FF8C68 0%, #FF5E68 100%);
+        }
+        .cta-gradient:hover {
+            background: linear-gradient(135deg, #FF7A52 0%, #FF4D58 100%);
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+        }
+        @keyframes shimmer {
+            0% { background-position: -200% center; }
+            100% { background-position: 200% center; }
+        }
+        @keyframes pulse-ring {
+            0% { transform: scale(1); opacity: 0.4; }
+            100% { transform: scale(1.8); opacity: 0; }
+        }
+
+        .animate-fade-in-up { animation: fadeInUp 0.6s ease-out forwards; }
+        .animate-fade-in { animation: fadeIn 0.8s ease-out forwards; }
+        .animate-float { animation: float 3s ease-in-out infinite; }
+
+        .delay-100 { animation-delay: 0.1s; }
+        .delay-200 { animation-delay: 0.2s; }
+        .delay-300 { animation-delay: 0.3s; }
+        .delay-400 { animation-delay: 0.4s; }
+        .delay-500 { animation-delay: 0.5s; }
+        .delay-600 { animation-delay: 0.6s; }
+
+        .scroll-animate {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .scroll-animate.visible { opacity: 1; transform: translateY(0); }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+        }
+        .bento-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+        }
+        .transition-all-smooth { transition: all 0.3s ease; }
+
+        /* URL input animation */
+        .url-input:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(255, 94, 104, 0.15);
+        }
+
+        /* Video mockup */
+        .video-mockup {
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+        }
+        .video-text-glow {
+            text-shadow: 0 0 30px rgba(255, 140, 104, 0.6);
+        }
+
+        /* Step connector */
+        .step-line {
+            width: 2px;
+            background: linear-gradient(to bottom, #FF8C68, #FF5E68);
+        }
+
+        /* Badge */
+        .badge {
+            background: linear-gradient(135deg, rgba(255,140,104,0.15) 0%, rgba(255,94,104,0.15) 100%);
+            border: 1px solid rgba(255,94,104,0.3);
+        }
+
+        .faq-content { display: none; }
+        .faq-content.open { display: block; }
+
+        /* Play button pulse */
+        .play-pulse::before {
+            content: '';
+            position: absolute;
+            inset: -8px;
+            border-radius: 50%;
+            background: rgba(255, 94, 104, 0.3);
+            animation: pulse-ring 1.5s ease-out infinite;
+        }
+
+    </style>
+</head>
+<body class="bg-cream text-gray-700">
+
+    <!-- Navbar -->
+    <header class="sticky top-0 z-50 bg-cream/95 backdrop-blur-sm">
+        <div class="max-w-6xl mx-auto px-6 py-4">
+            <nav class="flex items-center justify-between">
+                <a href="#" class="flex items-center gap-2 text-black font-semibold text-xl">
+                    <svg class="w-6 h-6" viewBox="0 0 100 100" fill="currentColor">
+                        <rect x="35" y="8" width="30" height="5" rx="2.5"/>
+                        <rect x="22" y="18" width="22" height="5" rx="2.5"/>
+                        <rect x="56" y="18" width="22" height="5" rx="2.5"/>
+                        <rect x="14" y="28" width="20" height="5" rx="2.5"/>
+                        <rect x="66" y="28" width="20" height="5" rx="2.5"/>
+                        <rect x="10" y="38" width="18" height="5" rx="2.5"/>
+                        <rect x="40" y="38" width="20" height="5" rx="2.5"/>
+                        <rect x="72" y="38" width="18" height="5" rx="2.5"/>
+                        <rect x="8" y="48" width="18" height="5" rx="2.5"/>
+                        <rect x="38" y="48" width="24" height="5" rx="2.5"/>
+                        <rect x="74" y="48" width="18" height="5" rx="2.5"/>
+                        <rect x="10" y="58" width="18" height="5" rx="2.5"/>
+                        <rect x="40" y="58" width="20" height="5" rx="2.5"/>
+                        <rect x="72" y="58" width="18" height="5" rx="2.5"/>
+                        <rect x="14" y="68" width="20" height="5" rx="2.5"/>
+                        <rect x="66" y="68" width="20" height="5" rx="2.5"/>
+                        <rect x="22" y="78" width="22" height="5" rx="2.5"/>
+                        <rect x="56" y="78" width="22" height="5" rx="2.5"/>
+                        <rect x="35" y="88" width="30" height="5" rx="2.5"/>
+                    </svg>
+                    Okara
+                </a>
+
+                <div class="hidden md:flex items-center gap-6">
+                    <a href="#how-it-works" class="text-gray-600 hover:text-black transition-colors text-sm font-medium">How it Works</a>
+                    <a href="#pricing" class="text-gray-600 hover:text-black transition-colors text-sm font-medium">Pricing</a>
+                </div>
+
+                <div class="flex items-center gap-4">
+                    <div class="hidden md:flex items-center gap-3">
+                        <a href="#" class="text-gray-500 hover:text-black transition-colors">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="text-gray-500 hover:text-black transition-colors">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/>
+                            </svg>
+                        </a>
+                    </div>
+                    <a href="/video" class="cta-gradient text-white px-5 py-2 rounded-lg text-sm font-medium transition-colors">
+                        Try Free
+                    </a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="pt-20 pb-16 md:pt-28 md:pb-20">
+        <div class="max-w-5xl mx-auto px-6 text-center">
+
+            <!-- Headline -->
+            <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold text-black tracking-tight leading-tight mb-6 animate-fade-in-up">
+                Make viral launch videos<br>
+                <span class="sunset-gradient-text">from your startup's URL</span>
+            </h1>
+
+            <p class="text-xl text-gray-500 mb-10 max-w-2xl mx-auto animate-fade-in-up delay-200">
+                Paste your URL and we handle the rest. We write cinematic copy, create stunning visuals, and export a viral MP4 — in minutes.
+            </p>
+
+            <!-- URL Input -->
+            <div class="max-w-2xl mx-auto animate-fade-in-up delay-300">
+                <div class="bg-white rounded-2xl shadow-lg shadow-gray-200/60 border border-gray-100 p-3 flex gap-3">
+                    <div class="flex items-center gap-2 flex-1 bg-gray-50 rounded-xl px-4 py-3">
+                        <svg class="w-5 h-5 text-gray-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+                        </svg>
+                        <input
+                            type="url"
+                            id="hero-url-input"
+                            placeholder="https://yourstartup.com"
+                            class="url-input flex-1 bg-transparent text-gray-700 placeholder-gray-400 text-base font-medium outline-none"
+                        />
+                    </div>
+                    <button onclick="goToApp()" class="cta-gradient text-white px-6 py-3 rounded-xl font-semibold text-base transition-all hover:shadow-lg hover:shadow-coral/25 flex-shrink-0">
+                        Generate Video →
+                    </button>
+                </div>
+                <p class="text-sm text-gray-400 mt-3">No credit card required · First video free</p>
+            </div>
+
+            <!-- Trust row -->
+            <div class="flex items-center justify-center gap-8 mt-10 animate-fade-in-up delay-400">
+                <div class="flex items-center gap-2">
+                    <div class="flex -space-x-2">
+                        <div class="w-7 h-7 rounded-full bg-gradient-to-br from-coral to-hotpink border-2 border-white"></div>
+                        <div class="w-7 h-7 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 border-2 border-white"></div>
+                        <div class="w-7 h-7 rounded-full bg-gradient-to-br from-green-400 to-emerald-600 border-2 border-white"></div>
+                        <div class="w-7 h-7 rounded-full bg-gradient-to-br from-purple-400 to-purple-600 border-2 border-white"></div>
+                    </div>
+                    <span class="text-sm text-gray-500 font-medium">500+ founders already using</span>
+                </div>
+                <div class="hidden md:flex items-center gap-1.5 text-sm text-gray-400">
+                    <svg class="w-4 h-4 text-yellow-400" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg class="w-4 h-4 text-yellow-400" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg class="w-4 h-4 text-yellow-400" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg class="w-4 h-4 text-yellow-400" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg class="w-4 h-4 text-yellow-400" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <span class="text-gray-500 ml-1">4.9 / 5</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section id="how-it-works" class="py-24 bg-cream">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center mb-16 scroll-animate">
+                <h2 class="text-4xl font-bold text-black mb-4">From URL to viral video in minutes</h2>
+                <p class="text-gray-500 text-lg">No video editing skills required. Just paste your URL.</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- Step 1 -->
+                <div class="scroll-animate">
+                    <div class="rounded-2xl border border-gray-200 overflow-hidden bg-white">
+                        <div class="relative h-64 overflow-hidden" style="background: linear-gradient(135deg, #FFF5F0 0%, #FFCEC0 60%, #FFB4A0 100%);">
+                            <div class="absolute inset-0 flex items-center justify-center p-6">
+                                <div class="bg-white/95 backdrop-blur rounded-xl p-5 shadow-xl w-full max-w-[240px]">
+                                    <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Paste your URL</p>
+                                    <div class="flex items-center gap-2 bg-gray-50 rounded-lg px-3 py-2.5 border border-gray-200">
+                                        <svg class="w-4 h-4 text-coral flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                                        <span class="text-xs font-medium text-gray-500 truncate">https://mystartup.com</span>
+                                    </div>
+                                    <div class="mt-3 flex items-center gap-2">
+                                        <div class="h-2 bg-coral/30 rounded-full flex-1 overflow-hidden">
+                                            <div class="h-full w-4/5 bg-coral rounded-full"></div>
+                                        </div>
+                                        <span class="text-xs text-gray-400">Scraping...</span>
+                                    </div>
+                                    <div class="mt-2 space-y-1.5">
+                                        <div class="flex items-center gap-2">
+                                            <span class="text-green-500 text-xs">✓</span>
+                                            <span class="text-xs text-gray-500">Logo extracted</span>
+                                        </div>
+                                        <div class="flex items-center gap-2">
+                                            <span class="text-green-500 text-xs">✓</span>
+                                            <span class="text-xs text-gray-500">Copy scraped</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <p class="text-sm text-gray-400 mb-1">Step 1</p>
+                            <h3 class="text-xl font-bold text-black mb-2">Paste & Scrape</h3>
+                            <p class="text-gray-500 text-sm">Drop your URL and we scrape your site, extract your logo, and pull hero copy and features.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="scroll-animate">
+                    <div class="rounded-2xl border border-gray-200 overflow-hidden bg-white">
+                        <div class="relative h-64 overflow-hidden" style="background: linear-gradient(145deg, #FFF8F5 0%, #FFD4C8 50%, #FF9580 100%);">
+                            <div class="absolute inset-0 flex items-center justify-center p-6">
+                                <div class="w-full max-w-[240px] space-y-2">
+                                    <div class="bg-white/95 backdrop-blur rounded-xl p-3 shadow-lg">
+                                        <p class="text-xs font-semibold text-gray-400 mb-2">AI is writing your video script...</p>
+                                        <div class="space-y-1.5">
+                                            <div class="text-xs text-gray-700 font-medium">🎬 Scene 1: Hook</div>
+                                            <div class="h-1.5 bg-coral/20 rounded-full overflow-hidden"><div class="h-full w-full bg-coral rounded-full"></div></div>
+                                            <div class="text-xs text-gray-700 font-medium">✨ Scene 2: Problem</div>
+                                            <div class="h-1.5 bg-coral/20 rounded-full overflow-hidden"><div class="h-full w-3/4 bg-coral rounded-full"></div></div>
+                                            <div class="text-xs text-gray-700 font-medium">🚀 Scene 3: Solution</div>
+                                            <div class="h-1.5 bg-gray-200 rounded-full overflow-hidden"><div class="h-full w-1/3 bg-coral/50 rounded-full"></div></div>
+                                        </div>
+                                    </div>
+                                    <div class="bg-white/80 backdrop-blur rounded-lg p-2.5 shadow text-xs text-gray-600">
+                                        "Stop wasting hours on Figma. Ship in minutes with..."
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <p class="text-sm text-gray-400 mb-1">Step 2</p>
+                            <h3 class="text-xl font-bold text-black mb-2">AI Writes the Script</h3>
+                            <p class="text-gray-500 text-sm">We craft punchy, platform-native copy — hooks, problem, solution, social proof, and a strong CTA.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="scroll-animate">
+                    <div class="rounded-2xl border border-gray-200 overflow-hidden bg-white">
+                        <div class="relative h-64 overflow-hidden" style="background: linear-gradient(160deg, #F0F4FF 0%, #D4DCFF 50%, #B4BCFF 100%);">
+                            <div class="absolute inset-0 flex items-center justify-center p-6">
+                                <div class="bg-white/95 backdrop-blur rounded-xl p-4 shadow-xl w-full max-w-[240px]">
+                                    <div class="flex items-center justify-between mb-3">
+                                        <span class="text-xs font-semibold text-gray-500">Rendering...</span>
+                                        <span class="text-xs bg-green-100 text-green-600 px-2 py-0.5 rounded font-medium">1080p</span>
+                                    </div>
+                                    <!-- Mini video preview -->
+                                    <div class="video-mockup rounded-lg aspect-video flex items-center justify-center mb-3">
+                                        <div class="text-center">
+                                            <div class="text-white text-xs font-bold">YOUR STARTUP</div>
+                                            <div class="sunset-gradient-text text-xs font-bold">Game changer.</div>
+                                        </div>
+                                    </div>
+                                    <div class="space-y-1.5">
+                                        <div class="flex items-center justify-between text-xs">
+                                            <span class="text-gray-500">Encoding MP4</span>
+                                            <span class="text-coral font-medium">87%</span>
+                                        </div>
+                                        <div class="h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                                            <div class="h-full bg-gradient-to-r from-coral to-hotpink rounded-full" style="width: 87%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <p class="text-sm text-gray-400 mb-1">Step 3</p>
+                            <h3 class="text-xl font-bold text-black mb-2">Render & Export</h3>
+                            <p class="text-gray-500 text-sm">We render cinematic motion graphics with real browser mockups of your product, and output a crisp 1080p MP4 ready to post.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Feature Bento Grid -->
+    <section class="py-24 bg-cream">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center mb-16 scroll-animate">
+                <h2 class="text-4xl font-bold text-black mb-4">Everything a launch video needs</h2>
+                <p class="text-gray-600 text-lg">Built for founders who ship fast</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-4">
+                <div class="bento-card bg-white rounded-2xl p-6 border border-gray-100 transition-all-smooth scroll-animate">
+                    <div class="w-12 h-12 rounded-xl sunset-gradient flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><circle cx="8" cy="8" r="1.5" fill="white" stroke="none"/><polyline points="2 17 8 11 12 15 16 11 22 17"/></svg>
+                    </div>
+                    <h4 class="text-lg font-semibold text-black mb-2">Cinematic Visuals</h4>
+                    <p class="text-gray-600 text-sm">We generate premium motion graphics with kinetic typography, gradient backgrounds, and smooth spring animations — the way top SaaS companies present their product.</p>
+                </div>
+
+                <div class="bento-card bg-white rounded-2xl p-6 border border-gray-100 transition-all-smooth scroll-animate">
+                    <div class="w-12 h-12 rounded-xl sunset-gradient flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                    </div>
+                    <h4 class="text-lg font-semibold text-black mb-2">Smart Web Scraping</h4>
+                    <p class="text-gray-600 text-sm">We extract your hero text, product description, logo, and key differentiators automatically.</p>
+                </div>
+
+                <div class="bento-card bg-white rounded-2xl p-6 border border-gray-100 transition-all-smooth scroll-animate">
+                    <div class="w-12 h-12 rounded-xl sunset-gradient flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                    </div>
+                    <h4 class="text-lg font-semibold text-black mb-2">Cinematic Motion Graphics</h4>
+                    <p class="text-gray-600 text-sm">Spring-physics animations, smooth scene transitions, and dynamic typography — all automatic.</p>
+                </div>
+
+                <div class="bento-card bg-white rounded-2xl p-6 border border-gray-100 transition-all-smooth scroll-animate">
+                    <div class="w-12 h-12 rounded-xl sunset-gradient flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                    </div>
+                    <h4 class="text-lg font-semibold text-black mb-2">AI Copywriting</h4>
+                    <p class="text-gray-600 text-sm">We write viral-optimized hooks, problem/solution frames, and CTAs tuned for each platform.</p>
+                </div>
+
+                <div class="bento-card bg-white rounded-2xl p-6 border border-gray-100 transition-all-smooth scroll-animate">
+                    <div class="w-12 h-12 rounded-xl sunset-gradient flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                    </div>
+                    <h4 class="text-lg font-semibold text-black mb-2">1080p MP4 Export</h4>
+                    <p class="text-gray-600 text-sm">Our render pipeline outputs broadcast-quality 1920×1080 video you can post anywhere.</p>
+                </div>
+
+                <div class="bento-card bg-white rounded-2xl p-6 border border-gray-100 transition-all-smooth scroll-animate">
+                    <div class="w-12 h-12 rounded-xl sunset-gradient flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                    </div>
+                    <h4 class="text-lg font-semibold text-black mb-2">Live Preview</h4>
+                    <p class="text-gray-600 text-sm">Watch your video play in the browser before rendering. Tweak any scene, color, or copy in real time.</p>
+                </div>
+
+                <div class="bento-card bg-white rounded-2xl p-6 border border-gray-100 transition-all-smooth scroll-animate">
+                    <div class="w-12 h-12 rounded-xl sunset-gradient flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.27h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.1a16 16 0 0 0 8 8l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                    </div>
+                    <h4 class="text-lg font-semibold text-black mb-2">Platform-Ready</h4>
+                    <p class="text-gray-600 text-sm">Optimized for Twitter/X, LinkedIn, Product Hunt, and TikTok. Pick your format before exporting.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats -->
+    <section class="py-16 bg-white">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 scroll-animate">
+                <div class="text-center">
+                    <div class="text-4xl md:text-5xl font-bold text-black mb-2">2 min</div>
+                    <div class="text-gray-600 font-medium">URL to MP4</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-4xl md:text-5xl font-bold text-black mb-2">1080p</div>
+                    <div class="text-gray-600 font-medium">Export Quality</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-4xl md:text-5xl font-bold text-black mb-2">20s</div>
+                    <div class="text-gray-600 font-medium">Cinematic Video</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-4xl md:text-5xl font-bold text-black mb-2">500+</div>
+                    <div class="text-gray-600 font-medium">Startups Launched</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="py-24 bg-cream">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center mb-16 scroll-animate">
+                <h2 class="text-4xl font-bold text-black mb-4">Founders love it</h2>
+                <p class="text-gray-500 text-lg">See what they're saying</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="bg-white rounded-2xl p-6 border border-gray-100 scroll-animate">
+                    <div class="flex gap-1 mb-4">
+                        <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    </div>
+                    <p class="text-gray-700 text-sm leading-relaxed mb-4">"I pasted our landing page URL and had a sick product launch video ready in under 3 minutes. It got 200k impressions on X. Insane ROI."</p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-9 h-9 rounded-full bg-gradient-to-br from-coral to-hotpink flex items-center justify-center text-white text-sm font-bold">A</div>
+                        <div>
+                            <div class="text-sm font-semibold text-black">Alex Chen</div>
+                            <div class="text-xs text-gray-400">Founder @ Shipfast</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl p-6 border border-gray-100 scroll-animate">
+                    <div class="flex gap-1 mb-4">
+                        <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    </div>
+                    <p class="text-gray-700 text-sm leading-relaxed mb-4">"We used to pay $500 per launch video. Now I generate one in minutes for every feature ship. The motion graphics look genuinely professional."</p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-9 h-9 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-white text-sm font-bold">S</div>
+                        <div>
+                            <div class="text-sm font-semibold text-black">Sarah Kim</div>
+                            <div class="text-xs text-gray-400">CEO @ Buildfast.io</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl p-6 border border-gray-100 scroll-animate">
+                    <div class="flex gap-1 mb-4">
+                        <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    </div>
+                    <p class="text-gray-700 text-sm leading-relaxed mb-4">"Posted on Product Hunt launch day and our video was the most shared asset. The AI-written hook was way better than anything I would've written myself."</p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-9 h-9 rounded-full bg-gradient-to-br from-green-400 to-emerald-600 flex items-center justify-center text-white text-sm font-bold">M</div>
+                        <div>
+                            <div class="text-sm font-semibold text-black">Marcus Lee</div>
+                            <div class="text-xs text-gray-400">Indie Hacker</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="py-24 bg-cream">
+        <div class="max-w-4xl mx-auto px-6">
+            <div class="text-center mb-16 scroll-animate">
+                <h2 class="text-4xl font-bold text-black mb-4">Frequently Asked Questions</h2>
+                <p class="text-gray-500 text-lg">Everything you need to know about LaunchClip</p>
+            </div>
+            <div class="space-y-4">
+                <div class="faq-item bg-white rounded-xl border border-gray-200 overflow-hidden scroll-animate">
+                    <button onclick="toggleFaq(this)" class="w-full px-6 py-5 text-left flex items-center justify-between hover:bg-gray-50 transition-colors">
+                        <span class="font-semibold text-gray-900 text-lg">What kind of URLs does it support?</span>
+                        <svg class="w-5 h-5 text-gray-400 transform transition-transform faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                    </button>
+                    <div class="faq-content px-6 pb-5">
+                        <p class="text-gray-600 leading-relaxed">Any public website URL — landing pages, product pages, startup homepages, app store listings, blog posts, or GitHub repos. If we can scrape it, we can turn it into a video.</p>
+                    </div>
+                </div>
+                <div class="faq-item bg-white rounded-xl border border-gray-200 overflow-hidden scroll-animate">
+                    <button onclick="toggleFaq(this)" class="w-full px-6 py-5 text-left flex items-center justify-between hover:bg-gray-50 transition-colors">
+                        <span class="font-semibold text-gray-900 text-lg">How long does rendering take?</span>
+                        <svg class="w-5 h-5 text-gray-400 transform transition-transform faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                    </button>
+                    <div class="faq-content px-6 pb-5">
+                        <p class="text-gray-600 leading-relaxed">Scraping + AI generation takes about 15–30 seconds. Rendering a 20-second video typically takes 1–2 minutes server-side depending on load. You'll see a live progress bar throughout.</p>
+                    </div>
+                </div>
+                <div class="faq-item bg-white rounded-xl border border-gray-200 overflow-hidden scroll-animate">
+                    <button onclick="toggleFaq(this)" class="w-full px-6 py-5 text-left flex items-center justify-between hover:bg-gray-50 transition-colors">
+                        <span class="font-semibold text-gray-900 text-lg">Can I customize the video before exporting?</span>
+                        <svg class="w-5 h-5 text-gray-400 transform transition-transform faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                    </button>
+                    <div class="faq-content px-6 pb-5">
+                        <p class="text-gray-600 leading-relaxed">Yes. After generation you get a live preview where you can edit any scene's copy, adjust colors, tweak timing, and regenerate individual scenes before hitting Export.</p>
+                    </div>
+                </div>
+                <div class="faq-item bg-white rounded-xl border border-gray-200 overflow-hidden scroll-animate">
+                    <button onclick="toggleFaq(this)" class="w-full px-6 py-5 text-left flex items-center justify-between hover:bg-gray-50 transition-colors">
+                        <span class="font-semibold text-gray-900 text-lg">What resolution and format is the exported video?</span>
+                        <svg class="w-5 h-5 text-gray-400 transform transition-transform faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                    </button>
+                    <div class="faq-content px-6 pb-5">
+                        <p class="text-gray-600 leading-relaxed">Default export is 1920×1080 MP4 at 30fps — perfect for Twitter/X, LinkedIn, YouTube, and Product Hunt. Vertical 1080×1920 for TikTok/Reels is coming soon.</p>
+                    </div>
+                </div>
+                <div class="faq-item bg-white rounded-xl border border-gray-200 overflow-hidden scroll-animate">
+                    <button onclick="toggleFaq(this)" class="w-full px-6 py-5 text-left flex items-center justify-between hover:bg-gray-50 transition-colors">
+                        <span class="font-semibold text-gray-900 text-lg">Is it really free?</span>
+                        <svg class="w-5 h-5 text-gray-400 transform transition-transform faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                    </button>
+                    <div class="faq-content px-6 pb-5">
+                        <p class="text-gray-600 leading-relaxed">Your first video is completely free, no credit card required. After that it's $9/month for 20 videos or $29/month for unlimited. We want every founder to be able to launch with a great video.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Banner -->
+    <section id="pricing" class="py-24 bg-cream">
+        <div class="max-w-4xl mx-auto px-6">
+            <div class="sunset-gradient rounded-3xl p-12 text-center scroll-animate">
+                <h2 class="text-4xl md:text-5xl font-bold text-white mb-4">Ready to go viral?</h2>
+                <p class="text-white/80 text-xl mb-8 max-w-xl mx-auto">Paste your URL. Ship your video. Watch the signups roll in.</p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="/video" class="bg-white text-gray-900 px-8 py-4 rounded-xl font-bold text-lg hover:bg-gray-50 transition-colors">
+                        Generate Your Video Free →
+                    </a>
+                </div>
+                <p class="text-white/60 text-sm mt-4">No credit card · First video free · 2 minute setup</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 bg-cream border-t border-gray-200">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                <a href="#" class="flex items-center gap-2 text-black font-semibold text-lg">
+                    <svg class="w-5 h-5" viewBox="0 0 100 100" fill="currentColor">
+                        <rect x="35" y="8" width="30" height="5" rx="2.5"/>
+                        <rect x="22" y="18" width="22" height="5" rx="2.5"/>
+                        <rect x="56" y="18" width="22" height="5" rx="2.5"/>
+                        <rect x="14" y="28" width="20" height="5" rx="2.5"/>
+                        <rect x="66" y="28" width="20" height="5" rx="2.5"/>
+                        <rect x="8" y="48" width="18" height="5" rx="2.5"/>
+                        <rect x="38" y="48" width="24" height="5" rx="2.5"/>
+                        <rect x="74" y="48" width="18" height="5" rx="2.5"/>
+                        <rect x="35" y="88" width="30" height="5" rx="2.5"/>
+                    </svg>
+                    Okara · LaunchClip
+                </a>
+                <div class="flex items-center gap-6 text-sm text-gray-500">
+                    <a href="#" class="hover:text-black transition-colors">Privacy</a>
+                    <a href="#" class="hover:text-black transition-colors">Terms</a>
+                </div>
+                <p class="text-sm text-gray-400">© 2026 Okara. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // FAQ toggle
+        function toggleFaq(button) {
+            const content = button.nextElementSibling;
+            const icon = button.querySelector('.faq-icon');
+            const isOpen = content.classList.contains('open');
+            document.querySelectorAll('.faq-content').forEach(el => el.classList.remove('open'));
+            document.querySelectorAll('.faq-icon').forEach(el => el.style.transform = 'rotate(0deg)');
+            if (!isOpen) {
+                content.classList.add('open');
+                icon.style.transform = 'rotate(180deg)';
+            }
+        }
+
+        // Scroll animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('visible');
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.scroll-animate').forEach(el => observer.observe(el));
+
+        // Hero URL input -> go to app
+        function goToApp() {
+            const url = document.getElementById('hero-url-input').value.trim();
+            if (!url) return;
+            window.location.href = '/video?url=' + encodeURIComponent(url);
+        }
+
+        document.getElementById('hero-url-input').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') goToApp();
+        });
+    </script>
+</body>
+</html>
