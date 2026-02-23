@@ -1,4 +1,4 @@
-FROM node:20-bookworm-slim
+FROM node:22-bookworm-slim
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
@@ -11,16 +11,18 @@ RUN apt-get update && \
 
 ENV REMOTION_CHROME_EXECUTABLE=/usr/bin/chromium
 ENV PUPPETEER_SKIP_DOWNLOAD=true
-ENV NODE_ENV=production
 
 WORKDIR /app
 
 COPY package.json package-lock.json ./
-RUN npm ci --omit=dev
+RUN npm ci
 
 COPY . .
 RUN npm run build
 
+RUN npm prune --omit=dev
+
+ENV NODE_ENV=production
 EXPOSE 3000
 
 CMD ["npm", "start"]
